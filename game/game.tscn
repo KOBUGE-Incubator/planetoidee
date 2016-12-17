@@ -1,0 +1,96 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://player/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://graphics/player.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 964.865, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 147.886, 142.68 )
+
+[node name="game" type="Node2D"]
+
+[node name="player3" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( -8.70634, -10.1694 )
+script/script = null
+
+[node name="player4" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( -8.70634, -10.1694 )
+script/script = null
+
+[node name="player5" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( -8.70634, -10.1694 )
+script/script = null
+
+[node name="player6" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( -8.70634, -10.1694 )
+script/script = null
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( -8.70634, -10.1694 )
+
+[node name="player2" type="Sprite" parent="."]
+
+transform/pos = Vector2( 405.135, 205.117 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 40.0
+margin/bottom = 14.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+custom_constants/shadow_as_outline = 1
+text = "SOME LONG STORY OF SOMETHING WEIRD GOES IN HERE TODAY LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... (H-space)\n\nThis is just a long text for the test of a shader which makes things dizzy\n\nIt might be multiline as well..\n|\n|\n123\n321\n4345345\n34534\n354\n345345\n343\n453434535\n213\nLOREM IPSUM SIT DOLOR AMET...\n.\n"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 877.272, 10.5514 )
+shapes/0/trigger = false
+shapes/1/shape = SubResource( 2 )
+shapes/1/transform = Matrix32( 1, 0, 0, 1, 144.705, 164.3 )
+shapes/1/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+
+transform/pos = Vector2( 877.272, 10.5514 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+
+transform/pos = Vector2( 144.705, 164.3 )
+shape = SubResource( 2 )
+trigger = false
+_update_shape_index = 1
+
+

@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://game/render.gd" type="Script" id=1]
+[ext_resource path="res://game/game.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CanvasItemShader" id=1]
+
+_code = { "fragment":"\n\t\tuniform float pattern_scale = 1;\n\t\t\n\t\tvec2 uvm = UV * 2 - vec2(1,1);\n\t\t\n\t\tfloat l = length(uvm);\n\t\tvec2 uvt = uvm * abs(1 / (l + pattern_scale) + 1 / (l - pattern_scale)) / l;\n\t\tfloat split_distance = max(abs(uvt.x), abs(uvt.y));\n\t\tbool unset_color = true;\n\t\t\n\t\tif(length(uvm) > pattern_scale) {\n\t\t\tCOLOR = vec4(0,0,0,0);\n\t\t\tunset_color = false;\n\t\t}\n\t\n\t\t\tif(unset_color && split_distance <= 2) {\n\t\t\t\tCOLOR = vec4(1.000000, 0.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 3) {\n\t\t\t\tCOLOR = vec4(0.000000, 2.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 10) {\n\t\t\t\tCOLOR = vec4(1.000000, 2.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 40) {\n\t\t\t\tCOLOR = vec4(0.000000, 0.000000, 4.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\tif(unset_color) {\n\t\t\tCOLOR = vec4(0,0,0,0);\n\t\t}\n\t", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
+
+[sub_resource type="CanvasItemMaterial" id=2]
+
+shader/shader = SubResource( 1 )
+shader/shading_mode = 0
+shader_param/pattern_scale = 1.0
+
+[node name="rendered" type="Panel"]
+
+material/material = SubResource( 2 )
+anchor/right = 1
+anchor/bottom = 1
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 0.0
+margin/bottom = 0.0
+script/script = ExtResource( 1 )
+splits = FloatArray( 2, 3, 10, 40 )
+size_scale = 1.0
+pattern_scale = 1.0
+filter = true
+mipmap = true
+
+[node name="viewport" type="Viewport" parent="."]
+
+rect = Rect2( 0, 0, 800, 800 )
+own_world = true
+world = null
+transparent_bg = false
+render_target/enabled = true
+render_target/v_flip = false
+render_target/clear_on_new_frame = false
+render_target/filter = false
+render_target/gen_mipmaps = false
+render_target/update_mode = 0
+audio_listener/enable_2d = false
+audio_listener/enable_3d = false
+physics/object_picking = false
+gui/disable_input = false
+
+[node name="game" parent="viewport" instance=ExtResource( 2 )]
+
+
