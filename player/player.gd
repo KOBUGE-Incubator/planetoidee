@@ -8,6 +8,7 @@ var actions = [
 	"btn_a",
 	"btn_b"
 ]
+var camera_offset = Vector2()
 
 onready var engines = [
 	get_node("engine_a"),
@@ -17,6 +18,7 @@ onready var engines = [
 onready var camera = get_node("camera")
 
 func _ready():
+	set_process(camera_movement_scale)
 	set_process_input(true)
 
 func _draw():
@@ -26,12 +28,15 @@ func _draw():
 			var origin = engines[i].get_pos()
 			draw_line(origin, origin - impulse * engine_power, Color(1,0,0))
 
+func _process(delta):
+	camera.set_offset(camera_offset.rotated(get_global_rot()))
+
 func _input(event):
 	if event.type == InputEvent.MOUSE_MOTION:
 		var center_offset = (event.pos - get_viewport_rect().size / 2)
 		var length_normalized = (center_offset / get_viewport_rect().size).length() * 2 + 0.1
 		center_offset *= ease(max(length_normalized, 1), camera_movement_easing)
-		camera.set_offset(center_offset * camera_movement_scale)
+		camera_offset = center_offset * camera_movement_scale
 
 func _integrate_forces(state):
 	update()
