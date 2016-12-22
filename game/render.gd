@@ -1,30 +1,63 @@
 tool
 extends Control
 
-export(FloatArray) var splits setget regen_shader_and_viewports
-export(float) var size_scale = 1
-export(float) var pattern_scale = 1
+export(FloatArray) var splits = [] setget set_splits
+export(float) var size_scale = 1 setget set_size_scale
+export(float) var pattern_param = 1 setget set_pattern_param
+export(float) var pattern_offset = 10 setget set_pattern_offset
 export(bool) var filter = false
 export(bool) var mipmap = false
 var viewports = []
 onready var root_viewport = get_node("viewport")
 
 func _ready():
-	regen_shader_and_viewports(splits)
+	regen_viewports()
+	remake_shader()
 	if !get_tree().is_editor_hint():
 		set_process(true)
+		set_process_input(true)
+		set_process_unhandled_input(true)
+
+func _input(event):
+	root_viewport.input(event)
+func _unhandled_input(event):
+	root_viewport.unhandled_input(event)
 
 func _process(delta):
+	var offset = root_viewport.get_rect().size / 2
 	var transform = root_viewport.get_canvas_transform()
-	var offset = get_viewport_rect().size * size_scale / 2 / transform.get_scale()
+	transform = transform.translated(transform.basis_xform_inv(-offset))
+	var base_transform = Matrix32().translated(offset)
 	for i in range(viewports.size()):
-		var split_transform = transform.scaled(Vector2(1, 1) / splits[i]).translated(offset * (splits[i] - 1 / size_scale))
+		var split_transform = base_transform * transform.scaled(Vector2(1, 1) / splits[i])
 		viewports[i].set_canvas_transform(split_transform)
+	get_material().set_shader_param("pattern_scale", offset / (offset - Vector2(pattern_offset, pattern_offset)))
 
-func regen_shader_and_viewports(_splits):
-	splits = _splits
-	regen_viewports()
-	regen_shader()
+func set_splits(new_splits):
+	splits = new_splits
+	if is_inside_tree():
+		regen_viewports()
+		remake_shader()
+func set_size_scale(new_scale):
+	size_scale = new_scale
+	if is_inside_tree():
+		regen_viewports()
+		update_uniforms()
+func set_pattern_param(new_param):
+	pattern_param = new_param
+	if is_inside_tree():
+		update_uniforms()
+func set_pattern_offset(new_offset):
+	pattern_offset = new_offset
+	if is_inside_tree():
+		update_uniforms()
+
+func get_screen_center():
+	var rotated_center = - root_viewport.get_canvas_transform().get_origin() + root_viewport.get_rect().size / 2
+	return root_viewport.get_canvas_transform().basis_xform_inv(rotated_center)
+
+func get_screen_rotation():
+	return root_viewport.get_canvas_transform().get_rotation()
 
 func regen_viewports():
 	if !is_inside_tree() or get_tree().is_editor_hint():
@@ -46,22 +79,25 @@ func regen_viewports():
 		root_viewport.add_child(split_viewport)
 		viewports.push_back(split_viewport)
 
-func regen_shader():
+func update_uniforms():
+	var debug = !is_inside_tree() or get_tree().is_editor_hint()
+	
+	if !debug:
+		assert(viewports.size() == splits.size())
+		for i in range(splits.size()):
+			var texture = viewports[i].get_render_target_texture()
+			get_material().set_shader_param(get_shader_split_texture_name(i), texture)
+	get_material().set_shader_param("pattern_param", pattern_param)
+
+func remake_shader():
 	var debug = !is_inside_tree() or get_tree().is_editor_hint()
 	
 	var shader = CanvasItemShader.new()
 	var material = CanvasItemMaterial.new()
 	shader.set_code("", shader_codegen_fragment(debug), "", 0, 0)
 	material.set_shader(shader)
-	
-	if !debug:
-		assert(viewports.size() == splits.size())
-		for i in range(splits.size()):
-			var texture = viewports[i].get_render_target_texture()
-			material.set_shader_param(get_shader_split_texture_name(i), texture)
-	material.set_shader_param("pattern_scale", pattern_scale)
-	
 	set_material(material)
+	update_uniforms()
 
 func shader_repeat_replace(repeated_template):
 	var shader_code = ""
@@ -85,16 +121,20 @@ func shader_codegen_fragment(debug):
 		""")
 	
 	shader_code += ("""
-		uniform float pattern_scale = 1;
+		uniform float pattern_param = 1;
+		uniform vec2 pattern_scale = vec2(1,1);
 		
-		vec2 uvm = UV * 2 - vec2(1,1);
+		vec2 uvm = (UV * 2 - vec2(1,1)) * pattern_scale;
 		
 		float l = length(uvm);
-		vec2 uvt = uvm * abs(1 / (l + pattern_scale) + 1 / (l - pattern_scale)) / l;
+		//float l = max(abs(uvm.x), abs(uvm.y));
+		vec2 uvt = uvm * abs(1 / (l + 1) + 1 / (l - 1)) * pattern_param / l;
+		//vec2 uvt = uvm * abs(tan(l * 3.141593 / 2) * pattern_param) / l;
+		//vec2 uvt = uvm * l / (1.6 - abs(asin(l))) * pattern_param / l;
 		float split_distance = max(abs(uvt.x), abs(uvt.y));
 		bool unset_color = true;
 		
-		if(length(uvm) > pattern_scale) {
+		if(l > 1) {
 			COLOR = vec4(0,0,0,0);
 			unset_color = false;
 		}
@@ -118,6 +158,7 @@ func shader_codegen_fragment(debug):
 		if(unset_color) {
 			COLOR = vec4(0,0,0,0);
 		}
+		//COLOR = mix(COLOR, vec4(0,0,0,1), fract(split_distance * 2));
 	""")
 	
 	return shader_code

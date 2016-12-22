@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://graphics/player.png" type="Texture" id=2]
@@ -11,86 +11,222 @@ extents = Vector2( 964.865, 10 )
 [sub_resource type="RectangleShape2D" id=2]
 
 custom_solver_bias = 0.0
-extents = Vector2( 147.886, 142.68 )
+extents = Vector2( 147.886, 50.3654 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 147.886, 50.3654 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 147.886, 50.3654 )
+
+[sub_resource type="RectangleShape2D" id=5]
+
+custom_solver_bias = 0.0
+extents = Vector2( 147.886, 71.237 )
+
+[sub_resource type="RectangleShape2D" id=6]
+
+custom_solver_bias = 0.0
+extents = Vector2( 147.886, 71.237 )
 
 [node name="game" type="Node2D"]
 
 [node name="player3" parent="." instance=ExtResource( 1 )]
 
-transform/pos = Vector2( -8.70634, -10.1694 )
+transform/pos = Vector2( 635.423, 448.063 )
 script/script = null
 
 [node name="player4" parent="." instance=ExtResource( 1 )]
 
-transform/pos = Vector2( -8.70634, -10.1694 )
+transform/pos = Vector2( 635.423, 448.063 )
 script/script = null
 
 [node name="player5" parent="." instance=ExtResource( 1 )]
 
-transform/pos = Vector2( -8.70634, -10.1694 )
+transform/pos = Vector2( 635.423, 448.063 )
 script/script = null
 
 [node name="player6" parent="." instance=ExtResource( 1 )]
 
-transform/pos = Vector2( -8.70634, -10.1694 )
+transform/pos = Vector2( 635.423, 448.063 )
 script/script = null
 
-[node name="player" parent="." instance=ExtResource( 1 )]
+[node name="player" parent="." groups=[ "player" ] instance=ExtResource( 1 )]
 
-transform/pos = Vector2( -8.70634, -10.1694 )
+transform/pos = Vector2( -100, 0 )
 
 [node name="player2" type="Sprite" parent="."]
 
 transform/pos = Vector2( 405.135, 205.117 )
 texture = ExtResource( 2 )
 
-[node name="Label" type="Label" parent="."]
+[node name="station" type="StaticBody2D" parent="." groups=[ "landmarks" ]]
 
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 40.0
-margin/bottom = 14.0
-custom_colors/font_color = Color( 1, 0, 0, 1 )
-custom_constants/shadow_offset_x = 1
-custom_constants/shadow_offset_y = 1
-custom_constants/shadow_as_outline = 1
-text = "SOME LONG STORY OF SOMETHING WEIRD GOES IN HERE TODAY LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... LOREM IPSUM SIT DOLOR AMET... (H-space)\n\nThis is just a long text for the test of a shader which makes things dizzy\n\nIt might be multiline as well..\n|\n|\n123\n321\n4345345\n34534\n354\n345345\n343\n453434535\n213\nLOREM IPSUM SIT DOLOR AMET...\n.\n"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
+transform/pos = Vector2( 151.042, 149.104 )
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 877.272, 10.5514 )
 shapes/0/trigger = false
 shapes/1/shape = SubResource( 2 )
-shapes/1/transform = Matrix32( 1, 0, 0, 1, 144.705, 164.3 )
+shapes/1/transform = Matrix32( 1, 0, 0, 1, 139.794, 237.964 )
 shapes/1/trigger = false
+shapes/2/shape = SubResource( 3 )
+shapes/2/transform = Matrix32( 0.113535, 0, 0, 3.55957, 266.183, 486.282 )
+shapes/2/trigger = false
+shapes/3/shape = SubResource( 4 )
+shapes/3/transform = Matrix32( 0.113535, 0, 0, 5.91896, 940.93, 334.674 )
+shapes/3/trigger = false
+shapes/4/shape = SubResource( 4 )
+shapes/4/transform = Matrix32( -4.96277e-09, -0.113535, 5.91896, -2.58726e-07, 607.638, 635.318 )
+shapes/4/trigger = false
 collision/layers = 1
 collision/mask = 1
 constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
+friction = 0.4
+bounce = 0.2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="station"]
 
 transform/pos = Vector2( 877.272, 10.5514 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="station"]
 
-transform/pos = Vector2( 144.705, 164.3 )
+transform/pos = Vector2( 139.794, 237.964 )
 shape = SubResource( 2 )
 trigger = false
 _update_shape_index = 1
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="station"]
+
+transform/pos = Vector2( 266.183, 486.282 )
+transform/scale = Vector2( 0.113535, 3.55957 )
+shape = SubResource( 3 )
+trigger = false
+_update_shape_index = 2
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="station"]
+
+transform/pos = Vector2( 940.93, 334.674 )
+transform/scale = Vector2( 0.113535, 5.91896 )
+shape = SubResource( 4 )
+trigger = false
+_update_shape_index = 3
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="station"]
+
+transform/pos = Vector2( 607.638, 635.318 )
+transform/rot = 90.0
+transform/scale = Vector2( 0.113535, 5.91896 )
+shape = SubResource( 4 )
+trigger = false
+_update_shape_index = 4
+
+[node name="Area2D" type="Area2D" parent="station"]
+
+input/pickable = true
+shapes/0/shape = SubResource( 5 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 138.566, 104.141 )
+shapes/0/trigger = false
+shapes/1/shape = SubResource( 6 )
+shapes/1/transform = Matrix32( 2.04597, 0, 0, 3.95628, 608.235, 321.151 )
+shapes/1/trigger = false
+space_override = 1
+gravity_vec = Vector2( 0, 1 )
+gravity = 0.0
+linear_damp = 0.2
+angular_damp = 0.0
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="station/Area2D"]
+
+transform/pos = Vector2( 138.566, 104.141 )
+shape = SubResource( 5 )
+trigger = false
+_update_shape_index = 0
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="station/Area2D"]
+
+transform/pos = Vector2( 608.235, 321.151 )
+transform/scale = Vector2( 2.04597, 3.95628 )
+shape = SubResource( 6 )
+trigger = false
+_update_shape_index = 1
+
+[node name="Panel" type="Panel" parent="station"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -84.0
+margin/top = 0.0
+margin/right = 1837.0
+margin/bottom = 19.0
+
+[node name="Panel2" type="Panel" parent="station"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -11.0
+margin/top = 189.0
+margin/right = 289.0
+margin/bottom = 283.0
+
+[node name="Panel3" type="Panel" parent="station"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 240.0
+margin/top = 286.0
+margin/right = 291.0
+margin/bottom = 662.0
+
+[node name="Panel4" type="Panel" parent="station"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 916.0
+margin/top = 24.0
+margin/right = 967.0
+margin/bottom = 645.0
+
+[node name="Panel5" type="Panel" parent="station"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 287.0
+margin/top = 609.0
+margin/right = 907.0
+margin/bottom = 667.0
+
+[node name="target" type="Position2D" parent="." groups=[ "landmarks" ]]
+
+transform/pos = Vector2( -14363, -18202.1 )
+
+[node name="Panel6" type="Panel" parent="target"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -60.0
+margin/top = -60.0
+margin/right = 60.0
+margin/bottom = 60.0
 
 
