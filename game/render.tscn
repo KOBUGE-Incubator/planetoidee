@@ -1,12 +1,15 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=9 format=1]
 
 [ext_resource path="res://game/render.gd" type="Script" id=1]
-[ext_resource path="res://game/game.tscn" type="PackedScene" id=2]
-[ext_resource path="res://game/hud.tscn" type="PackedScene" id=3]
+[ext_resource path="res://graphics/stars_layer.png" type="Texture" id=2]
+[ext_resource path="res://game/background_layer.gd" type="Script" id=3]
+[ext_resource path="res://graphics/stars_layer_large.png" type="Texture" id=4]
+[ext_resource path="res://game/game.tscn" type="PackedScene" id=5]
+[ext_resource path="res://game/hud.tscn" type="PackedScene" id=6]
 
 [sub_resource type="CanvasItemShader" id=1]
 
-_code = { "fragment":"\n\t\tuniform float pattern_param = 1;\n\t\tuniform vec2 pattern_scale = vec2(1,1);\n\t\t\n\t\tvec2 uvm = (UV * 2 - vec2(1,1)) * pattern_scale;\n\t\t\n\t\tfloat l = length(uvm);\n\t\t//float l = max(abs(uvm.x), abs(uvm.y));\n\t\tvec2 uvt = uvm * abs(1 / (l + 1) + 1 / (l - 1)) * pattern_param / l;\n\t\t//vec2 uvt = uvm * abs(tan(l * 3.141593 / 2) * pattern_param) / l;\n\t\t//vec2 uvt = uvm * l / (1.6 - abs(asin(l))) * pattern_param / l;\n\t\tfloat split_distance = max(abs(uvt.x), abs(uvt.y));\n\t\tbool unset_color = true;\n\t\t\n\t\tif(l > 1) {\n\t\t\tCOLOR = vec4(0,0,0,0);\n\t\t\tunset_color = false;\n\t\t}\n\t\n\t\t\tif(unset_color && split_distance <= 2) {\n\t\t\t\tCOLOR = vec4(1.000000, 0.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 3) {\n\t\t\t\tCOLOR = vec4(0.000000, 2.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 10) {\n\t\t\t\tCOLOR = vec4(1.000000, 2.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 40) {\n\t\t\t\tCOLOR = vec4(0.000000, 0.000000, 4.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\n\t\tif(unset_color) {\n\t\t\tCOLOR = vec4(0,0,0,0);\n\t\t}\n\t\t//COLOR = mix(COLOR, vec4(0,0,0,1), fract(split_distance * 2));\n\t", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
+_code = { "fragment":"\n\t\tuniform float pattern_param = 1;\n\t\tuniform vec2 pattern_scale = vec2(1,1);\n\t\t\n\t\tvec2 uvm = (UV * 2 - vec2(1,1)) * pattern_scale;\n\t\t\n\t\tfloat l = length(uvm);\n\t\t//float l = max(abs(uvm.x), abs(uvm.y));\n\t\tvec2 uvt = uvm * abs(1 / (l + 1) + 1 / (l - 1)) * pattern_param / l;\n\t\t//vec2 uvt = uvm * abs(tan(l * 3.141593 / 2) * pattern_param) / l;\n\t\t//vec2 uvt = uvm * l / (1.6 - abs(asin(l))) * pattern_param / l;\n\t\tfloat split_distance = max(abs(uvt.x), abs(uvt.y));\n\t\tbool unset_color = true;\n\t\t\n\t\tif(l > 1) {\n\t\t\tCOLOR = vec4(0,0,0,0);\n\t\t\tunset_color = false;\n\t\t}\n\t\n\t\t\tif(unset_color && split_distance <= 2) {\n\t\t\t\tCOLOR = vec4(1.000000, 0.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\tif(l < 1 && split_distance > 0 - 0 && split_distance <= 0) {\n\t\t\t\tCOLOR = mix(COLOR, vec4(1.000000, 0.000000, 0.000000, 1), \n\t\t\t\t\t(split_distance - 0 + 0) / 0);\n\t\t\t\t//COLOR = vec4(1,1,1,1);\n\t\t\t\t//COLOR.a = (split_distance - 0 + 0) / 0;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 4) {\n\t\t\t\tCOLOR = vec4(0.000000, 2.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\tif(l < 1 && split_distance > 2 - 1.6 && split_distance <= 2) {\n\t\t\t\tCOLOR = mix(COLOR, vec4(0.000000, 2.000000, 0.000000, 1), \n\t\t\t\t\t(split_distance - 2 + 1.6) / 1.6);\n\t\t\t\t//COLOR = vec4(1,1,1,1);\n\t\t\t\t//COLOR.a = (split_distance - 2 + 1.6) / 1.6;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 10) {\n\t\t\t\tCOLOR = vec4(1.000000, 2.000000, 0.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\tif(l < 1 && split_distance > 4 - 1.6 && split_distance <= 4) {\n\t\t\t\tCOLOR = mix(COLOR, vec4(1.000000, 2.000000, 0.000000, 1), \n\t\t\t\t\t(split_distance - 4 + 1.6) / 1.6);\n\t\t\t\t//COLOR = vec4(1,1,1,1);\n\t\t\t\t//COLOR.a = (split_distance - 4 + 1.6) / 1.6;\n\t\t\t}\n\t\t\n\t\t\tif(unset_color && split_distance <= 40) {\n\t\t\t\tCOLOR = vec4(0.000000, 0.000000, 4.000000, 1);\n\t\t\t\tunset_color = false;\n\t\t\t}\n\t\t\tif(l < 1 && split_distance > 10 - 4.8 && split_distance <= 10) {\n\t\t\t\tCOLOR = mix(COLOR, vec4(0.000000, 0.000000, 4.000000, 1), \n\t\t\t\t\t(split_distance - 10 + 4.8) / 4.8);\n\t\t\t\t//COLOR = vec4(1,1,1,1);\n\t\t\t\t//COLOR.a = (split_distance - 10 + 4.8) / 4.8;\n\t\t\t}\n\t\t\n\t\tif(unset_color) {\n\t\t\tCOLOR = vec4(0,0,0,0);\n\t\t}\n\t\t//COLOR = mix(COLOR, vec4(0,0,0,1), fract(split_distance * 2) / 2);\n\t", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
 
 [sub_resource type="CanvasItemMaterial" id=2]
 
@@ -29,10 +32,11 @@ margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
 script/script = ExtResource( 1 )
-splits = FloatArray( 2, 3, 10, 40 )
+splits = FloatArray( 2, 4, 10, 40 )
 size_scale = 1
-pattern_param = 1
+pattern_param = 1.0
 pattern_offset = 40.0
+transition_distance = 0.8
 filter = true
 mipmap = true
 
@@ -53,8 +57,44 @@ audio_listener/enable_3d = false
 physics/object_picking = false
 gui/disable_input = false
 
-[node name="game" parent="viewport" instance=ExtResource( 2 )]
+[node name="backgrounds" type="Node2D" parent="viewport"]
 
-[node name="hud" parent="." instance=ExtResource( 3 )]
+[node name="stars" type="TextureFrame" parent="viewport/backgrounds"]
+
+visibility/opacity = 0.4
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 1024.0
+margin/bottom = 1024.0
+texture = ExtResource( 2 )
+modulate = Color( 1, 1, 255, 1 )
+stretch_mode = 2
+script/script = ExtResource( 3 )
+movement_scale = Vector2( 0.9, 0.9 )
+
+[node name="stars_large" type="TextureFrame" parent="viewport/backgrounds"]
+
+visibility/opacity = 0.8
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 0.0
+margin/top = 0.0
+margin/right = 1024.0
+margin/bottom = 1024.0
+texture = ExtResource( 4 )
+modulate = Color( 1, 1, 255, 1 )
+stretch_mode = 2
+script/script = ExtResource( 3 )
+movement_scale = Vector2( 0.8, 0.8 )
+
+[node name="game" parent="viewport" instance=ExtResource( 5 )]
+
+[node name="hud" parent="." instance=ExtResource( 6 )]
 
 

@@ -28,11 +28,11 @@ contact_monitor = false
 sleeping = false
 can_sleep = false
 velocity/linear = Vector2( 0, 0 )
-velocity/angular = 10.0
+velocity/angular = 0.0
 damp_override/linear = -1.0
 damp_override/angular = -1.0
 script/script = ExtResource( 1 )
-engine_power = 100.0
+engine_power = 150.0
 camera_movement_scale = 0.1
 camera_movement_easing = 10.3968
 
