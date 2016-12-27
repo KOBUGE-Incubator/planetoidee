@@ -6,8 +6,8 @@ export(float) var size_scale = 1 setget set_size_scale
 export(float) var pattern_param = 1 setget set_pattern_param
 export(float) var pattern_offset = 10 setget set_pattern_offset
 export(float) var transition_distance = 0.5 setget set_transition_distance
-export(bool) var filter = false
-export(bool) var mipmap = false
+export(bool) var filter = false setget set_filter
+export(bool) var mipmap = false setget set_mipmap
 var viewports = []
 onready var root_viewport = get_node("viewport")
 onready var backgrounds = get_node("viewport/backgrounds")
@@ -21,8 +21,11 @@ func _ready():
 		set_process(true)
 		set_process_input(true)
 		set_process_unhandled_input(true)
+		connect("resized", self, "update_viewport_params")
 
 func _input(event):
+	if event.is_action_pressed("fullscreen") and !event.is_echo():
+		OS.set_window_fullscreen(!OS.is_window_fullscreen())
 	root_viewport.input(event)
 func _unhandled_input(event):
 	root_viewport.unhandled_input(event)
@@ -42,7 +45,6 @@ func _process(delta):
 				viewports[i].set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_ONCE)
 		else:
 			viewports[i].set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_ALWAYS)
-	get_material().set_shader_param("pattern_scale", offset / (offset - Vector2(pattern_offset, pattern_offset)))
 	var background_size = splits[splits.size() - 1] * root_viewport.get_rect().size
 	var center = get_screen_center()
 	for background_layer in backgrounds.get_children():
@@ -56,7 +58,7 @@ func set_splits(new_splits):
 func set_size_scale(new_scale):
 	size_scale = new_scale
 	if is_inside_tree():
-		regen_viewports()
+		update_viewport_params()
 		update_uniforms()
 func set_pattern_param(new_param):
 	pattern_param = new_param
@@ -70,10 +72,22 @@ func set_transition_distance(new_distance):
 	transition_distance = new_distance
 	if is_inside_tree():
 		remake_shader()
+func set_filter(new_filter):
+	filter = new_filter
+	if is_inside_tree():
+		update_viewport_params()
+func set_mipmap(new_mipmap):
+	mipmap = new_mipmap
+	if is_inside_tree():
+		update_viewport_params()
 
 func get_screen_center():
 	var rotated_center = - root_viewport.get_canvas_transform().get_origin() + root_viewport.get_rect().size / 2
 	return root_viewport.get_canvas_transform().basis_xform_inv(rotated_center)
+
+func get_screen_size():
+	var base_size = get_size()
+	return Vector2(1,1) * (min(base_size.x, base_size.y))
 
 func get_screen_rotation():
 	return root_viewport.get_canvas_transform().get_rotation()
@@ -82,21 +96,33 @@ func regen_viewports():
 	if !is_inside_tree() or get_tree().is_editor_hint():
 		return
 	var world = root_viewport.get_world_2d()
-	var size = get_viewport_rect().size * size_scale
+	
 	for viewport in viewports:
 		viewport.queue_free()
 	viewports = []
+	
 	for split in splits:
 		var split_viewport = Viewport.new()
 		split_viewport.set_use_own_world(false)
 		split_viewport.set_world_2d(world)
 		split_viewport.set_as_render_target(true)
-		split_viewport.set_render_target_filter(filter)
-		split_viewport.set_render_target_gen_mipmaps(mipmap)
-		split_viewport.set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_ALWAYS)
-		split_viewport.set_rect(Rect2(Vector2(), size))
 		root_viewport.add_child(split_viewport)
 		viewports.push_back(split_viewport)
+	update_viewport_params()
+
+func update_viewport_params():
+	if get_tree().is_editor_hint():
+		return
+	var base_size = get_size() * size_scale
+	var size = Vector2(1,1) * (min(base_size.x, base_size.y) - pattern_offset)
+	
+	root_viewport.set_rect(Rect2(Vector2(), size))
+	for viewport in viewports:
+		viewport.set_render_target_filter(filter)
+		viewport.set_render_target_gen_mipmaps(mipmap)
+		viewport.set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_ALWAYS)
+		viewport.set_rect(Rect2(Vector2(), size))
+	update_uniforms()
 
 func update_uniforms():
 	var debug = !is_inside_tree() or get_tree().is_editor_hint()
@@ -107,6 +133,7 @@ func update_uniforms():
 			var texture = viewports[i].get_render_target_texture()
 			get_material().set_shader_param(get_shader_split_texture_name(i), texture)
 	get_material().set_shader_param("pattern_param", pattern_param)
+	get_material().set_shader_param("pattern_scale", get_size() / root_viewport.get_rect().size)
 
 func remake_shader():
 	var debug = !is_inside_tree() or get_tree().is_editor_hint()
