@@ -33,7 +33,7 @@ margin/right = 0.0
 margin/bottom = 0.0
 script/script = ExtResource( 1 )
 splits = FloatArray( 2, 4, 10, 40 )
-size_scale = 1
+size_scale = 1.0
 pattern_param = 1.0
 pattern_offset = 40.0
 transition_distance = 0.8
@@ -62,6 +62,7 @@ gui/disable_input = false
 [node name="stars" type="TextureFrame" parent="viewport/backgrounds"]
 
 visibility/opacity = 0.4
+visibility/blend_mode = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -79,6 +80,7 @@ movement_scale = Vector2( 0.9, 0.9 )
 [node name="stars_large" type="TextureFrame" parent="viewport/backgrounds"]
 
 visibility/opacity = 0.8
+visibility/blend_mode = 1
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2

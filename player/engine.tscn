@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=1]
+
+[ext_resource path="res://player/engine.gd" type="Script" id=1]
+[ext_resource path="res://graphics/engine_particles.png" type="Texture" id=2]
+[ext_resource path="res://graphics/engine_off.png" type="Texture" id=3]
+[ext_resource path="res://graphics/engine_on.png" type="Texture" id=4]
+[ext_resource path="res://graphics/engine_on_top.png" type="Texture" id=5]
+[ext_resource path="res://graphics/engine_off_top.png" type="Texture" id=6]
+
+[sub_resource type="ColorRamp" id=1]
+
+offsets = FloatArray( 0, 0.208145, 0.841629, 1 )
+colors = ColorArray( 0, 0, 0, 1, 0.800781, 0.378494, 0.576441, 1, 0.136719, 0.136719, 0.136719, 1, 0, 0, 0, 1 )
+
+[node name="engine" type="Node2D"]
+
+script/script = ExtResource( 1 )
+power = 200
+transition_time = 0.2
+action = "ui_up"
+activation = 0.0
+patricle_exaust_speed = 125.0
+
+[node name="particles" type="Particles2D" parent="."]
+
+visibility/blend_mode = 1
+transform/pos = Vector2( 0, 41 )
+config/amount = 32
+config/lifetime = 0.4
+config/emitting = false
+config/half_extents = Vector2( 6, 15 )
+config/local_space = false
+config/texture = ExtResource( 2 )
+config/h_frames = 6
+params/direction = 0.0
+params/spread = 15.0
+params/linear_velocity = 125.0
+params/spin_velocity = 0.0
+params/orbit_velocity = 0.0
+params/gravity_direction = 0.0
+params/gravity_strength = 0.0
+params/radial_accel = 0.0
+params/tangential_accel = 0.0
+params/damping = 0.0
+params/initial_angle = 360.0
+params/initial_size = 0.3
+params/final_size = 1.0
+params/hue_variation = 0.0
+params/anim_speed_scale = 0.0
+params/anim_initial_pos = 1.0
+randomness/initial_angle = 1.0
+randomness/initial_size = 0.1
+randomness/final_size = 0.2
+randomness/anim_initial_pos = 1.0
+color/color_ramp = SubResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+
+transform/pos = Vector2( -0.32, 9.68 )
+transform/scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 3 )
+
+[node name="sprite_on" type="Sprite" parent="sprite"]
+
+visibility/opacity = 0.0
+texture = ExtResource( 4 )
+
+[node name="sprite_on_top" type="Sprite" parent="sprite/sprite_on"]
+
+visibility/opacity = 0.0
+z/z = 1
+texture = ExtResource( 5 )
+
+[node name="sprite_top" type="Sprite" parent="sprite"]
+
+visibility/opacity = 0.0
+z/z = 1
+texture = ExtResource( 6 )
+
+[node name="tween" type="Tween" parent="."]
+
+playback/process_mode = 0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+

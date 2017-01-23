@@ -125,6 +125,8 @@ func update_viewport_params():
 	update_uniforms()
 
 func update_uniforms():
+	var base_size = get_size() * size_scale
+	var size = Vector2(1,1) * (min(base_size.x, base_size.y) - pattern_offset)
 	var debug = !is_inside_tree() or get_tree().is_editor_hint()
 	
 	if !debug:
@@ -133,7 +135,7 @@ func update_uniforms():
 			var texture = viewports[i].get_render_target_texture()
 			get_material().set_shader_param(get_shader_split_texture_name(i), texture)
 	get_material().set_shader_param("pattern_param", pattern_param)
-	get_material().set_shader_param("pattern_scale", get_size() / root_viewport.get_rect().size)
+	get_material().set_shader_param("pattern_scale", get_size() / size)
 
 func remake_shader():
 	var debug = !is_inside_tree() or get_tree().is_editor_hint()

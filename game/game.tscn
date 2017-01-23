@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://graphics/player.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -57,12 +56,8 @@ script/script = null
 
 [node name="player" parent="." groups=[ "player" ] instance=ExtResource( 1 )]
 
-transform/pos = Vector2( 844.075, 168.675 )
-
-[node name="player2" type="Sprite" parent="."]
-
-transform/pos = Vector2( 405.135, 205.117 )
-texture = ExtResource( 2 )
+transform/pos = Vector2( 802.776, 1428.28 )
+transform/rot = -98.6795
 
 [node name="station" type="RigidBody2D" parent="." groups=[ "landmarks" ]]
 
@@ -111,7 +106,6 @@ _update_shape_index = 0
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="station"]
 
 transform/pos = Vector2( -421.383, -42.4807 )
-transform/scale = Vector2( 1, 1 )
 shape = SubResource( 2 )
 trigger = false
 _update_shape_index = 1
