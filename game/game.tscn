@@ -59,7 +59,7 @@ script/script = null
 transform/pos = Vector2( 802.776, 1428.28 )
 transform/rot = -98.6795
 
-[node name="station" type="RigidBody2D" parent="." groups=[ "landmarks" ]]
+[node name="station" type="RigidBody2D" parent="." groups=[ "landmarks", "ally" ]]
 
 transform/pos = Vector2( 151.042, 149.104 )
 input/pickable = false
@@ -91,7 +91,7 @@ contacts_reported = 0
 contact_monitor = false
 sleeping = false
 can_sleep = true
-velocity/linear = Vector2( 0, 0 )
+velocity/linear = Vector2( -40, 6000 )
 velocity/angular = 0.0
 damp_override/linear = -1.0
 damp_override/angular = -1.0
@@ -226,6 +226,21 @@ margin/bottom = 387.0
 transform/pos = Vector2( -14363, -18202.1 )
 
 [node name="Panel6" type="Panel" parent="target"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -60.0
+margin/top = -60.0
+margin/right = 60.0
+margin/bottom = 60.0
+
+[node name="target_enemy" type="Position2D" parent="." groups=[ "landmarks", "enemy" ]]
+
+transform/pos = Vector2( 14363, -18202.1 )
+
+[node name="Panel6" type="Panel" parent="target_enemy"]
 
 focus/ignore_mouse = false
 focus/stop_mouse = true

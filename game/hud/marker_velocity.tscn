@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://game/hud/marker_arrow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://game/hud/marker_velocity.gd" type="Script" id=2]
+[ext_resource path="res://graphics/marker_arrows.png" type="Texture" id=3]
+
+[node name="marker_velocity" instance=ExtResource( 1 )]
+
+z/z = 1
+script/script = ExtResource( 2 )
+angular_log_scale = 0.1
+angular_size = 20.0
+
+[node name="sprite" parent="."]
+
+frame = 1
+modulate = Color( 1, 0.101562, 0.101562, 1 )
+
+[node name="angular" type="Sprite" parent="."]
+
+transform/pos = Vector2( 0, 15.6968 )
+transform/rot = 90.0
+transform/scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, -20 )
+hframes = 6
+frame = 1
+modulate = Color( 0.478317, 0.949219, 0.529822, 1 )
+
+

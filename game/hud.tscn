@@ -15,7 +15,6 @@ margin/top = 0.0
 margin/right = 0.0
 margin/bottom = 0.0
 script/script = ExtResource( 1 )
-min_arrow_marker_distance = 3000.0
 
 [node name="markers" type="Node2D" parent="."]
 

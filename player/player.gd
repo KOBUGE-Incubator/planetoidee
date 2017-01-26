@@ -33,7 +33,7 @@ func _integrate_forces(state):
 			engine.activate(1)
 			var impulse = transform.basis_xform(Vector2(0, -1).rotated(engine.get_rot()))
 			var origin = transform.basis_xform(engine.get_pos())
-			apply_impulse(origin, impulse * engine.activation * engine.power * state.get_step())
+			apply_impulse(origin, impulse * engine.power * state.get_step())
 		else:
 			engine.activate(0)
 	

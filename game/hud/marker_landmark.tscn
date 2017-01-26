@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://game/hud/marker_arrow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://game/hud/marker_landmark.gd" type="Script" id=2]
+
+[node name="marker_landmark" instance=ExtResource( 1 )]
+
+script/script = ExtResource( 2 )
+min_distance = 3000
+ally_color = Color( 0.312531, 0.816406, 0.312531, 1 )
+enemy_color = Color( 0.976562, 0.432968, 0.244141, 1 )
+neutral_color = Color( 0.933333, 0.94902, 0.933333, 1 )
+
+[node name="sprite" parent="."]
+
+modulate = Color( 0.935198, 0.949219, 0.934387, 1 )
+
+

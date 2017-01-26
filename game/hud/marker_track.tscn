@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://game/hud/marker_arrow.tscn" type="PackedScene" id=1]
+[ext_resource path="res://game/hud/marker_track.gd" type="Script" id=2]
+
+[node name="marker_track" instance=ExtResource( 1 )]
+
+z/z = 2
+script/script = ExtResource( 2 )
+assumed_speed = 3500.0
+min_distance = 30
+
+[node name="sprite" parent="."]
+
+frame = 5
+modulate = Color( 1, 0.890625, 0, 1 )
+
+
