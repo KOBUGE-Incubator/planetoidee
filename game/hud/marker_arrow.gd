@@ -15,6 +15,10 @@ func _ready():
 
 func set_target(_target):
 	target = _target
+	target.connect("exit_tree", self, "target_exited")
+
+func target_exited():
+	queue_free()
 
 func activate(on):
 	aura.set_hidden(!on)

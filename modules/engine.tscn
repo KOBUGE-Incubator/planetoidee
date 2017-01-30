@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=1]
 
-[ext_resource path="res://player/engine.gd" type="Script" id=1]
+[ext_resource path="res://modules/engine.gd" type="Script" id=1]
 [ext_resource path="res://graphics/engine_particles.png" type="Texture" id=2]
 [ext_resource path="res://graphics/engine_off.png" type="Texture" id=3]
 [ext_resource path="res://graphics/engine_on.png" type="Texture" id=4]
@@ -15,7 +15,7 @@ colors = ColorArray( 0, 0, 0, 1, 0.800781, 0.378494, 0.576441, 1, 0.136719, 0.13
 [node name="engine" type="Node2D"]
 
 script/script = ExtResource( 1 )
-power = 200
+power = 400.0
 transition_time = 0.2
 action = "ui_up"
 activation = 0.0

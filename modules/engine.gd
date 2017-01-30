@@ -29,7 +29,7 @@ func _process(delta):
 	particles.set_param(Particles2D.PARAM_DIRECTION, fmod(rad2deg(velocity.angle() - get_global_rot() + 2 * PI), 360))
 	particles.set_param(Particles2D.PARAM_SPREAD, base_spread / (length + 1))
 
-func should_fire():
+func input():
 	for part in action_parts:
 		if !Input.is_action_pressed(part):
 			return false
@@ -42,7 +42,7 @@ func set_activation(amount):
 		particles.set_emitting(amount > 0.1)
 	activation = amount
 
-func activate(amount = 1.0):
+func trust(amount = 1.0):
 	if target_activation != amount:
 		target_activation = amount
 		tween.remove_all()

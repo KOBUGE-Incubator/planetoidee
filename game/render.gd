@@ -36,15 +36,19 @@ func _process(delta):
 	var transform = root_viewport.get_canvas_transform()
 	transform = transform.translated(transform.basis_xform_inv(-offset))
 	var base_transform = Matrix32().translated(offset)
+	
 	var low_performance = 1 / delta < 50
+	
 	for i in range(viewports.size()):
 		var split_transform = base_transform * transform.scaled(Vector2(1, 1) / splits[i])
 		viewports[i].set_canvas_transform(split_transform)
+		
 		if low_performance:
 			if i == 0 or frame_i % i:
 				viewports[i].set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_ONCE)
 		else:
 			viewports[i].set_render_target_update_mode(Viewport.RENDER_TARGET_UPDATE_ALWAYS)
+			
 	var background_size = splits[splits.size() - 1] * root_viewport.get_rect().size
 	var center = get_screen_center()
 	for background_layer in backgrounds.get_children():
@@ -126,7 +130,7 @@ func update_viewport_params():
 
 func update_uniforms():
 	var base_size = get_size() * size_scale
-	var size = Vector2(1,1) * (min(base_size.x, base_size.y) - pattern_offset)
+	var size = Vector2(1,1) * (min(base_size.x, base_size.y) - pattern_offset * size_scale)
 	var debug = !is_inside_tree() or get_tree().is_editor_hint()
 	
 	if !debug:
@@ -135,7 +139,7 @@ func update_uniforms():
 			var texture = viewports[i].get_render_target_texture()
 			get_material().set_shader_param(get_shader_split_texture_name(i), texture)
 	get_material().set_shader_param("pattern_param", pattern_param)
-	get_material().set_shader_param("pattern_scale", get_size() / size)
+	get_material().set_shader_param("pattern_scale", get_size() / size * size_scale)
 
 func remake_shader():
 	var debug = !is_inside_tree() or get_tree().is_editor_hint()
