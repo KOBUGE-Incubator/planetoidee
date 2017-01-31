@@ -2,7 +2,7 @@ extends Node2D
 
 export(float) var power = 200
 export(float) var transition_time = 0.2
-export(String) var action = "ui_up"
+export(int, FLAGS, "A", "B", "A hold", "B hold", "A tap", "B tap") var input = 0
 export(float) var activation = 0 setget set_activation
 export(float) var patricle_exaust_speed = 200
 
@@ -12,7 +12,6 @@ onready var tween = get_node("tween")
 
 onready var base_lifetime = particles.get_lifetime()
 onready var base_spread = particles.get_param(Particles2D.PARAM_SPREAD)
-onready var action_parts = action.split("+")
 
 var target_activation = 0
 
@@ -28,12 +27,6 @@ func _process(delta):
 	particles.set_param(Particles2D.PARAM_LINEAR_VELOCITY, length)
 	particles.set_param(Particles2D.PARAM_DIRECTION, fmod(rad2deg(velocity.angle() - get_global_rot() + 2 * PI), 360))
 	particles.set_param(Particles2D.PARAM_SPREAD, base_spread / (length + 1))
-
-func input():
-	for part in action_parts:
-		if !Input.is_action_pressed(part):
-			return false
-	return true
 
 func set_activation(amount):
 	if sprite_on and particles:

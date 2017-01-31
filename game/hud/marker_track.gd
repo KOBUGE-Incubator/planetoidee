@@ -1,8 +1,5 @@
 extends "marker_arrow.gd"
 
-const UP = Vector2(0, 1)
-const TARGET = Vector2(0, 1)
-
 export(float) var assumed_speed = 400
 export(float) var min_distance = 30
 

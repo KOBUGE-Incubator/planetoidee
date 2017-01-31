@@ -4,6 +4,8 @@ export(float) var speed = 3000
 export(float) var max_distnace = 30000
 export(float) var damage = 100
 
+var originator = WeakRef.new()
+
 onready var raycast = get_node("raycast")
 
 func _ready():
@@ -17,7 +19,7 @@ func _fixed_process(delta):
 	
 	if raycast.is_colliding():
 		if raycast.get_collider() and raycast.get_collider().has_method("damage"):
-			raycast.get_collider().damage(damage)
+			raycast.get_collider().damage(damage, originator.get_ref())
 		max_distnace = 0
 	
 	if max_distnace <= 0:
